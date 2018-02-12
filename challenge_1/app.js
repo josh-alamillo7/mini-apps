@@ -116,14 +116,26 @@ Board.prototype.toggleSquare = function(square) {
 	//this will have to be called by a click handler.
 	//Big issue: how do we get the click handler to choose a certain square.
 	//we can possibly make new objects/divs out of each component in the grid.
+
+	if (typeof square === 'string') {
+		square = JSON.parse(square)
+	}
+
 	if (this.squares[square] === 0) {
+		//change that element to the appropriate text if we did not click on a used square.
+		
+
 		this.squares[square] = this.currentPlayer;
 		this.squaresFilled++;
-	}
-	if (this.currentPlayer === 1) {
+		if (this.currentPlayer === 1) {
+			document.getElementById("[" + square.toString() + "]").textContent = "X"
 		this.currentPlayer = 2;
-	}
-	else {this.currentPlayer = 1};
+		}
+		else {
+			document.getElementById("[" + square.toString() + "]").textContent = "O"
+			this.currentPlayer = 1};
+		}
+	console.log(this.squares)	
 }
 
 Board.prototype.reset = function() {
@@ -132,6 +144,7 @@ Board.prototype.reset = function() {
 	for (var i = 0; i < this.size; i++) {
 		for (var j = 0; j < this.size; j++) {
 			this.squares[[i, j]] = 0
+			document.getElementById("[" + i + "," + j + "]").textContent = "BLANK"
 		}
 	}
 	this.currentPlayer = 1;
@@ -139,6 +152,9 @@ Board.prototype.reset = function() {
 }
 
 Board.prototype.buildBoard = function() {
+	var theBoard = this;
+
+
 	var ticTacToeTable = document.createElement("table");
 	for (var i = 0; i < this.size; i++) {
 		var newRow = document.createElement("tr");
@@ -146,7 +162,10 @@ Board.prototype.buildBoard = function() {
 			var newSquare = document.createElement("td");
 			newSquare.id = "[" + i + "," + j + "]";
 			newSquare.append(newSquare.id)
-			newSquare.onclick = function() {alert(this.id)};
+			newSquare.onclick = function() {
+				theBoard.toggleSquare(this.id);
+
+			};
 			newRow.appendChild(newSquare)
 		}
 		ticTacToeTable.appendChild(newRow)
@@ -275,6 +294,7 @@ var SquareTests = function() {
 	testingBoard.toggleSquare([2,0]);
 	testingBoard.toggleSquare([2,2]);
 	assertEqual(testingBoard.checkWin(), "Tie game", 'it should correctly identify a tie game');
+	testingBoard.reset();
 }
 
 SquareTests()
