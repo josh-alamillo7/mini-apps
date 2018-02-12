@@ -6,6 +6,7 @@
 	//It will probably have to be a grid.
 //The squares will have an on click handler.
 
+//********THE BOARD*********
 var Board = function(size) {
 
 	//max size
@@ -136,9 +137,47 @@ Board.prototype.reset = function() {
 	this.squaresFilled = 0;
 }
 
+Board.prototype.buildBoard = function() {
+	var ticTacToeTable = document.createElement("table");
+	for (var i = 0; i < this.size; i++) {
+		var newRow = document.createElement("tr");
+		for (var j = 0; j < this.size; j++) {
+			var newSquare = document.createElement("td");
+			newSquare.id = "[" + i + "," + j + "]";
+			newSquare.append(newSquare.id)
+			newRow.appendChild(newSquare)
+		}
+		ticTacToeTable.appendChild(newRow)
+	}
+	document.body.children[3].appendChild(ticTacToeTable);
+	//this may have to be changed(above line)
+}
 
 
-//******TESTS*******//
+//initialization of the div that will hold the table
+var divOne = document.createElement("div");
+document.body.appendChild(divOne);
+
+var secondTestingBoard = new Board(4);
+secondTestingBoard.buildBoard();
+// var ticTacToeTable = document.createElement("table");
+// for (var i = 0; i < 3; i++) {
+// 	var newRow = document.createElement("tr");
+// 	for (var j = 0; j < 3; j++) {
+// 		var newSquare = document.createElement("td");
+// 		newSquare.id = "[" + i + "," + j + "]";
+// 		console.log(newSquare.id)
+// 		newSquare.append("I'm a square")
+// 		newRow.appendChild(newSquare)
+// 	}
+// 	ticTacToeTable.appendChild(newRow)
+// }
+// document.body.children[3].append(ticTacToeTable);
+// console.log(document)
+
+
+
+//*********TESTS***********
 
 var testingBoard = new Board(3);
 
@@ -181,59 +220,63 @@ var boardTests = function() {
 boardTests();
 
 
+
 assertEqual(Object.keys(testingBoard.squares).length, testingBoard.numberOfSquares, 'it should have an object representing the number of squares it has');
 assertEqual(testingBoard.squares[Object.keys(testingBoard.squares)[0]], 0, 'it should initialize all square values to zero')
 
 console.log("***Squares***")
 
-testingBoard.toggleSquare([1,2]);
-assertEqual(testingBoard.squares[[1,2]], 1, 'it should set the provided square to the player\'s value');
-assertEqual(testingBoard.currentPlayer, 2, 'it should switch the current player');
-assertEqual(testingBoard.squaresFilled, 1, 'it should increase the number of squares filled');
-testingBoard.reset();
+var SquareTests = function() {
+	testingBoard.toggleSquare([1,2]);
+	assertEqual(testingBoard.squares[[1,2]], 1, 'it should set the provided square to the player\'s value');
+	assertEqual(testingBoard.currentPlayer, 2, 'it should switch the current player');
+	assertEqual(testingBoard.squaresFilled, 1, 'it should increase the number of squares filled');
+	testingBoard.reset();
 
-testingBoard.toggleSquare([1,0]);
-testingBoard.toggleSquare([0,0]);
-testingBoard.toggleSquare([1,1]);
-testingBoard.toggleSquare([2,2]);
-testingBoard.toggleSquare([1,2]);
-assertEqual(testingBoard.checkWin(), "X wins", 'it should return the correct winner for a row win');
-testingBoard.reset();
+	testingBoard.toggleSquare([1,0]);
+	testingBoard.toggleSquare([0,0]);
+	testingBoard.toggleSquare([1,1]);
+	testingBoard.toggleSquare([2,2]);
+	testingBoard.toggleSquare([1,2]);
+	assertEqual(testingBoard.checkWin(), "X wins", 'it should return the correct winner for a row win');
+	testingBoard.reset();
 
-testingBoard.toggleSquare([0,1]);
-testingBoard.toggleSquare([0,2]);
-testingBoard.toggleSquare([0,0]);
-testingBoard.toggleSquare([1,2]);
-testingBoard.toggleSquare([1,1]);
-testingBoard.toggleSquare([2,2]);
-assertEqual(testingBoard.checkWin(), "O wins", 'it should return the correct winner for a column win');
-testingBoard.reset();
+	testingBoard.toggleSquare([0,1]);
+	testingBoard.toggleSquare([0,2]);
+	testingBoard.toggleSquare([0,0]);
+	testingBoard.toggleSquare([1,2]);
+	testingBoard.toggleSquare([1,1]);
+	testingBoard.toggleSquare([2,2]);
+	assertEqual(testingBoard.checkWin(), "O wins", 'it should return the correct winner for a column win');
+	testingBoard.reset();
 
-testingBoard.toggleSquare([0,0]);
-testingBoard.toggleSquare([0,1]);
-testingBoard.toggleSquare([1,1]);
-testingBoard.toggleSquare([0,2]);
-testingBoard.toggleSquare([2,2]);
-assertEqual(testingBoard.checkWin(), "X wins", 'it should return the correct winner for a down-right diagonal win');
-testingBoard.reset();
+	testingBoard.toggleSquare([0,0]);
+	testingBoard.toggleSquare([0,1]);
+	testingBoard.toggleSquare([1,1]);
+	testingBoard.toggleSquare([0,2]);
+	testingBoard.toggleSquare([2,2]);
+	assertEqual(testingBoard.checkWin(), "X wins", 'it should return the correct winner for a down-right diagonal win');
+	testingBoard.reset();
 
-testingBoard.toggleSquare([0,0]);
-testingBoard.toggleSquare([2,0]);
-testingBoard.toggleSquare([0,1]);
-testingBoard.toggleSquare([1,1]);
-testingBoard.toggleSquare([2,2]);
-testingBoard.toggleSquare([0,2]);
-assertEqual(testingBoard.checkWin(), "O wins", 'it should return the correct winner for an up-right diagonal win');
-testingBoard.reset();
+	testingBoard.toggleSquare([0,0]);
+	testingBoard.toggleSquare([2,0]);
+	testingBoard.toggleSquare([0,1]);
+	testingBoard.toggleSquare([1,1]);
+	testingBoard.toggleSquare([2,2]);
+	testingBoard.toggleSquare([0,2]);
+	assertEqual(testingBoard.checkWin(), "O wins", 'it should return the correct winner for an up-right diagonal win');
+	testingBoard.reset();
 
-testingBoard.toggleSquare([0,0]);
-testingBoard.toggleSquare([1,1]);
-testingBoard.toggleSquare([0,2]);
-testingBoard.toggleSquare([0,1]);
-testingBoard.toggleSquare([1,0]);
-testingBoard.toggleSquare([1,2]);
-testingBoard.toggleSquare([2,1]);
-testingBoard.toggleSquare([2,0]);
-testingBoard.toggleSquare([2,2]);
-console.log(testingBoard.squares)
-assertEqual(testingBoard.checkWin(), "Tie game", 'it should correctly identify a tie game');
+	testingBoard.toggleSquare([0,0]);
+	testingBoard.toggleSquare([1,1]);
+	testingBoard.toggleSquare([0,2]);
+	testingBoard.toggleSquare([0,1]);
+	testingBoard.toggleSquare([1,0]);
+	testingBoard.toggleSquare([1,2]);
+	testingBoard.toggleSquare([2,1]);
+	testingBoard.toggleSquare([2,0]);
+	testingBoard.toggleSquare([2,2]);
+	assertEqual(testingBoard.checkWin(), "Tie game", 'it should correctly identify a tie game');
+}
+
+SquareTests()
