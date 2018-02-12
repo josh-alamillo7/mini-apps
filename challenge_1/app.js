@@ -24,6 +24,7 @@ var Board = function(size) {
 	//zero will mean it's not filled, 1 will mean it belongs to X, 2 will mean it belongs to O.
 
 	this.currentPlayer = 1;
+	this.buildBoard();
 
 	//we also need to somehow keep track of which player's turn it is.
 }
@@ -145,6 +146,7 @@ Board.prototype.buildBoard = function() {
 			var newSquare = document.createElement("td");
 			newSquare.id = "[" + i + "," + j + "]";
 			newSquare.append(newSquare.id)
+			newSquare.onclick = function() {alert(this.id)};
 			newRow.appendChild(newSquare)
 		}
 		ticTacToeTable.appendChild(newRow)
@@ -158,8 +160,6 @@ Board.prototype.buildBoard = function() {
 var divOne = document.createElement("div");
 document.body.appendChild(divOne);
 
-var secondTestingBoard = new Board(4);
-secondTestingBoard.buildBoard();
 // var ticTacToeTable = document.createElement("table");
 // for (var i = 0; i < 3; i++) {
 // 	var newRow = document.createElement("tr");
@@ -218,8 +218,6 @@ var boardTests = function() {
 	assertEqual(testingBoard.currentPlayer, 1, 'it should initialize the current player to X');
 }
 boardTests();
-
-
 
 assertEqual(Object.keys(testingBoard.squares).length, testingBoard.numberOfSquares, 'it should have an object representing the number of squares it has');
 assertEqual(testingBoard.squares[Object.keys(testingBoard.squares)[0]], 0, 'it should initialize all square values to zero')
