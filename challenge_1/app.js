@@ -43,50 +43,71 @@ Board.prototype.checkWin = function() {
 		if (rowValues.every(rowValue => {
 			return rowValue === 1;
 		})) {
-			return 1;
+			return "X wins";
 		}
 		else if (rowValues.every(rowValue => {
 			return rowValue === 2;
 		})) {
-			return 2;
+			return "O wins";
 		}
 	}
 
 	//check for a column win
 	for (var i = 0; i < this.size; i++) {
-		var rowValues = []
+		var columnValues = []
 		for (var j = 0; j < this.size; j++) {
-			rowValues.push(this.squares[[j, i]])
+			columnValues.push(this.squares[[j, i]])
 		}
-		if (rowValues.every(rowValue => {
-			return rowValue === 1;
+		if (columnValues.every(columnValue => {
+			return columnValue === 1;
 		})) {
-			return 1;
+			return "X wins";
 		}
-		else if (rowValues.every(rowValue => {
-			return rowValue === 2;
+		else if (columnValues.every(columnValue => {
+			return columnValue === 2;
 		})) {
-			return 2;
+			return "O wins";
 		}
 	}
 
 	//check for a diagonal win
+	var diagDownValues = []
 	for (var i = 0; i < this.size; i++) {
-		var rowValues = []
-		rowValues.push(this.squares[[i, i]]);
-		if (rowValues.every(rowValue => {
-			return rowValue === 1;
+		diagDownValues.push(this.squares[[i, i]]);
+	}
+		if (diagDownValues.every(diagDownValue => {
+			return diagDownValue === 1;
 		})) {
-			return 1;
+			return "X wins";
 		}
-		else if (rowValues.every(rowValue => {
-			return rowValue === 2;
+		else if (diagDownValues.every(diagDownValue => {
+			return diagDownValue === 2;
 		})) {
-			return 2;
+			return "O wins";
 		}
+
+	var diagUpValues = []
+	for (var i = 0; i < this.size; i++) {			
+			diagUpValues.push(this.squares[[i, this.size - 1 - i]]);
+		}
+			if (diagUpValues.every(diagUpValue => {
+				return diagUpValue === 1;
+			})) {
+				return "X wins";
+			}
+			else if (diagUpValues.every(diagUpValue => {
+				return diagUpValue === 2;
+			})) {
+				return "O wins";
+		}
+
+	if (this.squaresFilled === this.numberOfSquares) {
+		return "Tie game";
 	}
 
-	return 0;
+
+
+	return "";
 }
 
 Board.prototype.toggleSquare = function(square) {
@@ -176,7 +197,7 @@ testingBoard.toggleSquare([0,0]);
 testingBoard.toggleSquare([1,1]);
 testingBoard.toggleSquare([2,2]);
 testingBoard.toggleSquare([1,2]);
-assertEqual(testingBoard.checkWin(), 1, 'it should return the correct winner for a row win');
+assertEqual(testingBoard.checkWin(), "X wins", 'it should return the correct winner for a row win');
 testingBoard.reset();
 
 testingBoard.toggleSquare([0,1]);
@@ -185,7 +206,7 @@ testingBoard.toggleSquare([0,0]);
 testingBoard.toggleSquare([1,2]);
 testingBoard.toggleSquare([1,1]);
 testingBoard.toggleSquare([2,2]);
-assertEqual(testingBoard.checkWin(), 2, 'it should return the correct winner for a column win');
+assertEqual(testingBoard.checkWin(), "O wins", 'it should return the correct winner for a column win');
 testingBoard.reset();
 
 testingBoard.toggleSquare([0,0]);
@@ -193,6 +214,26 @@ testingBoard.toggleSquare([0,1]);
 testingBoard.toggleSquare([1,1]);
 testingBoard.toggleSquare([0,2]);
 testingBoard.toggleSquare([2,2]);
-assertEqual(testingBoard.checkWin(), 1, 'it should return the correct winner for a down-right diagonal win');
+assertEqual(testingBoard.checkWin(), "X wins", 'it should return the correct winner for a down-right diagonal win');
 testingBoard.reset();
 
+testingBoard.toggleSquare([0,0]);
+testingBoard.toggleSquare([2,0]);
+testingBoard.toggleSquare([0,1]);
+testingBoard.toggleSquare([1,1]);
+testingBoard.toggleSquare([2,2]);
+testingBoard.toggleSquare([0,2]);
+assertEqual(testingBoard.checkWin(), "O wins", 'it should return the correct winner for an up-right diagonal win');
+testingBoard.reset();
+
+testingBoard.toggleSquare([0,0]);
+testingBoard.toggleSquare([1,1]);
+testingBoard.toggleSquare([0,2]);
+testingBoard.toggleSquare([0,1]);
+testingBoard.toggleSquare([1,0]);
+testingBoard.toggleSquare([1,2]);
+testingBoard.toggleSquare([2,1]);
+testingBoard.toggleSquare([2,0]);
+testingBoard.toggleSquare([2,2]);
+console.log(testingBoard.squares)
+assertEqual(testingBoard.checkWin(), "Tie game", 'it should correctly identify a tie game');
