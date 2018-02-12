@@ -135,7 +135,7 @@ Board.prototype.toggleSquare = function(square) {
 			document.getElementById("[" + square.toString() + "]").textContent = "O"
 			this.currentPlayer = 1};
 		}
-	console.log(this.squares)	
+	console.log(this.checkWin())	
 }
 
 Board.prototype.reset = function() {
@@ -153,7 +153,6 @@ Board.prototype.reset = function() {
 
 Board.prototype.buildBoard = function() {
 	var theBoard = this;
-
 
 	var ticTacToeTable = document.createElement("table");
 	for (var i = 0; i < this.size; i++) {
