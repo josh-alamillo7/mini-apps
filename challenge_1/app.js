@@ -114,7 +114,6 @@ Board.prototype.checkWin = function() {
 
 Board.prototype.toggleSquare = function(square) {
 	//this will have to be called by a click handler.
-	//Big issue: how do we get the click handler to choose a certain square.
 	//we can possibly make new objects/divs out of each component in the grid.
 	if (this.checkWin() !== "Game in progress...") {
 		return
@@ -126,8 +125,6 @@ Board.prototype.toggleSquare = function(square) {
 
 	if (this.squares[square] === 0) {
 		//change that element to the appropriate text if we did not click on a used square.
-		
-
 		this.squares[square] = this.currentPlayer;
 		this.squaresFilled++;
 		if (this.currentPlayer === 1) {
@@ -148,7 +145,7 @@ Board.prototype.reset = function() {
 	for (var i = 0; i < this.size; i++) {
 		for (var j = 0; j < this.size; j++) {
 			this.squares[[i, j]] = 0
-			document.getElementById("[" + i + "," + j + "]").textContent = "BLANK"
+			document.getElementById("[" + i + "," + j + "]").textContent = "*"
 		}
 	}
 	this.currentPlayer = 1;
@@ -165,7 +162,7 @@ Board.prototype.buildBoard = function() {
 		for (var j = 0; j < this.size; j++) {
 			var newSquare = document.createElement("td");
 			newSquare.id = "[" + i + "," + j + "]";
-			newSquare.append("SQUARE")
+			newSquare.append ("*")
 			newSquare.onclick = function() {
 				theBoard.toggleSquare(this.id);
 
@@ -185,7 +182,7 @@ Board.prototype.buildBoard = function() {
 	//this may have to be changed(above line)
 }
 
-//***INITIALIZATION OF BOARD AND ALL DISPLAY ELEMENTS***
+//*******INITIALIZATION OF BOARD AND ALL DISPLAY ELEMENTS*******
 var divOne = document.createElement("div");
 document.body.appendChild(divOne);
 document.body.appendChild(document.createElement("br"));
@@ -194,32 +191,11 @@ document.body.appendChild(divTwo);
 document.body.children[5].textContent = "Game in progress...";
 
 
-var testingBoard = new Board(4);
+var testingBoard = new Board(3);
 
-
-// var ticTacToeTable = document.createElement("table");
-// for (var i = 0; i < 3; i++) {
-// 	var newRow = document.createElement("tr");
-// 	for (var j = 0; j < 3; j++) {
-// 		var newSquare = document.createElement("td");
-// 		newSquare.id = "[" + i + "," + j + "]";
-// 		console.log(newSquare.id)
-// 		newSquare.append("I'm a square")
-// 		newRow.appendChild(newSquare)
-// 	}
-// 	ticTacToeTable.appendChild(newRow)
-// }
-// document.body.children[3].append(ticTacToeTable);
-// console.log(document)
-
-
-
-//*********TESTS***********
-
-
+//*********TESTS GALORE***********
 
 /*
-
 
 var assertEqual = function(cond1, cond2, testname) {
 	if (cond1 === cond2) {
@@ -276,7 +252,7 @@ var SquareTests = function() {
 	testingBoard.toggleSquare([1,1]);
 	testingBoard.toggleSquare([2,2]);
 	testingBoard.toggleSquare([1,2]);
-	assertEqual(testingBoard.checkWin(), "X wins", 'it should return the correct winner for a row win');
+	assertEqual(testingBoard.checkWin(), "X WINS!", 'it should return the correct winner for a row win');
 	testingBoard.reset();
 
 	testingBoard.toggleSquare([0,1]);
@@ -285,7 +261,7 @@ var SquareTests = function() {
 	testingBoard.toggleSquare([1,2]);
 	testingBoard.toggleSquare([1,1]);
 	testingBoard.toggleSquare([2,2]);
-	assertEqual(testingBoard.checkWin(), "O wins", 'it should return the correct winner for a column win');
+	assertEqual(testingBoard.checkWin(), "O WINS!", 'it should return the correct winner for a column win');
 	testingBoard.reset();
 
 	testingBoard.toggleSquare([0,0]);
@@ -293,7 +269,7 @@ var SquareTests = function() {
 	testingBoard.toggleSquare([1,1]);
 	testingBoard.toggleSquare([0,2]);
 	testingBoard.toggleSquare([2,2]);
-	assertEqual(testingBoard.checkWin(), "X wins", 'it should return the correct winner for a down-right diagonal win');
+	assertEqual(testingBoard.checkWin(), "X WINS!", 'it should return the correct winner for a down-right diagonal win');
 	testingBoard.reset();
 
 	testingBoard.toggleSquare([0,0]);
@@ -302,7 +278,7 @@ var SquareTests = function() {
 	testingBoard.toggleSquare([1,1]);
 	testingBoard.toggleSquare([2,2]);
 	testingBoard.toggleSquare([0,2]);
-	assertEqual(testingBoard.checkWin(), "O wins", 'it should return the correct winner for an up-right diagonal win');
+	assertEqual(testingBoard.checkWin(), "O WINS!", 'it should return the correct winner for an up-right diagonal win');
 	testingBoard.reset();
 
 	testingBoard.toggleSquare([0,0]);
@@ -319,5 +295,4 @@ var SquareTests = function() {
 }
 
 SquareTests()
-
 */
