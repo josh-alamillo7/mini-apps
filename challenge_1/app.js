@@ -24,6 +24,8 @@ var Board = function(size) {
 	//zero will mean it's not filled, 1 will mean it belongs to X, 2 will mean it belongs to O.
 	this.currentPlayer = 1;
 	this.previousWinner = 1;
+	this.XWins = 0;
+	this.OWins = 0;
 	this.buildBoard();
 
 	//we also need to somehow keep track of which player's turn it is.
@@ -120,10 +122,12 @@ Board.prototype.toggleSquare = function(square) {
 		return
 	}
 
+	//this is necessary for comparing the array to the div string.
 	if (typeof square === 'string') {
 		square = JSON.parse(square)
 	}
 
+	//
 	if (this.squares[square] === 0) {
 		//change that element to the appropriate text if we did not click on a used square.
 		this.squares[square] = this.currentPlayer;
@@ -140,9 +144,11 @@ Board.prototype.toggleSquare = function(square) {
 	document.body.children[5].textContent = this.checkWin()
 	if (this.checkWin() === "X WINS!") {
 		this.previousWinner = 1;
+		this.XWins++;
 	}
 	else if (this.checkWin() === "O WINS!") {
 		this.previousWinner = 2;
+		this.OWins++;
 	}
 }
 

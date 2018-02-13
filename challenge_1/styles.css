@@ -2,3 +2,17 @@ table, td {
     border: 1px solid black;
     padding: 30px;
 }
+
+.title {
+	font-size: 35px;
+	padding-left: 100px;
+}
+
+footer {
+	font-size: 25px;
+}
+
+button {
+	font-size: 16px;
+	float left: 140px;
+}
