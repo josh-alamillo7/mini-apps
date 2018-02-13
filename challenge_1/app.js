@@ -23,6 +23,7 @@ var Board = function(size) {
 	}
 	//zero will mean it's not filled, 1 will mean it belongs to X, 2 will mean it belongs to O.
 	this.currentPlayer = 1;
+	this.previousWinner = 1;
 	this.buildBoard();
 
 	//we also need to somehow keep track of which player's turn it is.
@@ -137,6 +138,12 @@ Board.prototype.toggleSquare = function(square) {
 		}
 
 	document.body.children[5].textContent = this.checkWin()
+	if (this.checkWin() === "X WINS!") {
+		this.previousWinner = 1;
+	}
+	else if (this.checkWin() === "O WINS!") {
+		this.previousWinner = 2;
+	}
 }
 
 Board.prototype.reset = function() {
@@ -148,14 +155,16 @@ Board.prototype.reset = function() {
 			document.getElementById("[" + i + "," + j + "]").textContent = "*"
 		}
 	}
-	this.currentPlayer = 1;
+	this.currentPlayer = this.previousWinner;
 	this.squaresFilled = 0;
 	document.body.children[5].textContent = "Game in progress...";
 }
 
 Board.prototype.buildBoard = function() {
+	//required for binding click handler to each square
 	var theBoard = this;
 
+	//initialize the tic tac toe table values and click handler.
 	var ticTacToeTable = document.createElement("table");
 	for (var i = 0; i < this.size; i++) {
 		var newRow = document.createElement("tr");
@@ -191,7 +200,7 @@ document.body.appendChild(divTwo);
 document.body.children[5].textContent = "Game in progress...";
 
 
-var testingBoard = new Board(3);
+var testingBoard = new Board(5);
 
 //*********TESTS GALORE***********
 
