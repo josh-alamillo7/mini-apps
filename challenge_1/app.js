@@ -22,7 +22,6 @@ var Board = function(size) {
 		}
 	}
 	//zero will mean it's not filled, 1 will mean it belongs to X, 2 will mean it belongs to O.
-
 	this.currentPlayer = 1;
 	this.buildBoard();
 
@@ -45,12 +44,12 @@ Board.prototype.checkWin = function() {
 		if (rowValues.every(rowValue => {
 			return rowValue === 1;
 		})) {
-			return "X wins";
+			return "X WINS!";
 		}
 		else if (rowValues.every(rowValue => {
 			return rowValue === 2;
 		})) {
-			return "O wins";
+			return "O WINS!";
 		}
 	}
 
@@ -63,12 +62,12 @@ Board.prototype.checkWin = function() {
 		if (columnValues.every(columnValue => {
 			return columnValue === 1;
 		})) {
-			return "X wins";
+			return "X WINS!";
 		}
 		else if (columnValues.every(columnValue => {
 			return columnValue === 2;
 		})) {
-			return "O wins";
+			return "O WINS!";
 		}
 	}
 
@@ -80,12 +79,12 @@ Board.prototype.checkWin = function() {
 		if (diagDownValues.every(diagDownValue => {
 			return diagDownValue === 1;
 		})) {
-			return "X wins";
+			return "X WINS!";
 		}
 		else if (diagDownValues.every(diagDownValue => {
 			return diagDownValue === 2;
 		})) {
-			return "O wins";
+			return "O WINS!";
 		}
 
 	var diagUpValues = []
@@ -95,12 +94,12 @@ Board.prototype.checkWin = function() {
 			if (diagUpValues.every(diagUpValue => {
 				return diagUpValue === 1;
 			})) {
-				return "X wins";
+				return "X WINS!";
 			}
 			else if (diagUpValues.every(diagUpValue => {
 				return diagUpValue === 2;
 			})) {
-				return "O wins";
+				return "O WINS!";
 		}
 
 	if (this.squaresFilled === this.numberOfSquares) {
@@ -109,13 +108,16 @@ Board.prototype.checkWin = function() {
 
 
 
-	return "";
+	return "Game in progress...";
 }
 
 Board.prototype.toggleSquare = function(square) {
 	//this will have to be called by a click handler.
 	//Big issue: how do we get the click handler to choose a certain square.
 	//we can possibly make new objects/divs out of each component in the grid.
+	if (this.checkWin() !== "Game in progress...") {
+		return
+	}
 
 	if (typeof square === 'string') {
 		square = JSON.parse(square)
@@ -135,7 +137,8 @@ Board.prototype.toggleSquare = function(square) {
 			document.getElementById("[" + square.toString() + "]").textContent = "O"
 			this.currentPlayer = 1};
 		}
-	console.log(this.checkWin())	
+
+	document.body.children[5].textContent = this.checkWin()
 }
 
 Board.prototype.reset = function() {
@@ -160,7 +163,7 @@ Board.prototype.buildBoard = function() {
 		for (var j = 0; j < this.size; j++) {
 			var newSquare = document.createElement("td");
 			newSquare.id = "[" + i + "," + j + "]";
-			newSquare.append(newSquare.id)
+			newSquare.append("SQUARE")
 			newSquare.onclick = function() {
 				theBoard.toggleSquare(this.id);
 
@@ -174,9 +177,14 @@ Board.prototype.buildBoard = function() {
 }
 
 
-//initialization of the div that will hold the table
+//initialization of all display elements
 var divOne = document.createElement("div");
 document.body.appendChild(divOne);
+document.body.appendChild(document.createElement("br"))
+var divTwo = document.createElement("footer");
+document.body.appendChild(divTwo);
+document.body.children[5].textContent = "Game in progress..."
+
 
 // var ticTacToeTable = document.createElement("table");
 // for (var i = 0; i < 3; i++) {
@@ -197,8 +205,9 @@ document.body.appendChild(divOne);
 
 //*********TESTS***********
 
-var testingBoard = new Board(3);
+var testingBoard = new Board(4);
 
+/*
 var assertEqual = function(cond1, cond2, testname) {
 	if (cond1 === cond2) {
 		console.log("Passed: " + testname);
@@ -297,3 +306,5 @@ var SquareTests = function() {
 }
 
 SquareTests()
+
+*/
