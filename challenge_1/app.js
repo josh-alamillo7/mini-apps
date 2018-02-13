@@ -71,7 +71,7 @@ Board.prototype.checkWin = function() {
 		}
 	}
 
-	//check for a diagonal win
+	//check for a downward diagonal win
 	var diagDownValues = []
 	for (var i = 0; i < this.size; i++) {
 		diagDownValues.push(this.squares[[i, i]]);
@@ -87,6 +87,7 @@ Board.prototype.checkWin = function() {
 			return "O WINS!";
 		}
 
+	//check for an upward diagonal win
 	var diagUpValues = []
 	for (var i = 0; i < this.size; i++) {			
 			diagUpValues.push(this.squares[[i, this.size - 1 - i]]);
@@ -152,6 +153,7 @@ Board.prototype.reset = function() {
 	}
 	this.currentPlayer = 1;
 	this.squaresFilled = 0;
+	document.body.children[5].textContent = "Game in progress...";
 }
 
 Board.prototype.buildBoard = function() {
@@ -172,18 +174,27 @@ Board.prototype.buildBoard = function() {
 		}
 		ticTacToeTable.appendChild(newRow)
 	}
+
+	var resetButton = document.createElement("button");
+	document.body.appendChild(resetButton);
+	document.body.children[6].textContent = "Reset the board!";
+	resetButton.onclick = function() {
+		theBoard.reset();
+	}
 	document.body.children[3].appendChild(ticTacToeTable);
 	//this may have to be changed(above line)
 }
 
-
-//initialization of all display elements
+//***INITIALIZATION OF BOARD AND ALL DISPLAY ELEMENTS***
 var divOne = document.createElement("div");
 document.body.appendChild(divOne);
-document.body.appendChild(document.createElement("br"))
+document.body.appendChild(document.createElement("br"));
 var divTwo = document.createElement("footer");
 document.body.appendChild(divTwo);
-document.body.children[5].textContent = "Game in progress..."
+document.body.children[5].textContent = "Game in progress...";
+
+
+var testingBoard = new Board(4);
 
 
 // var ticTacToeTable = document.createElement("table");
@@ -205,9 +216,11 @@ document.body.children[5].textContent = "Game in progress..."
 
 //*********TESTS***********
 
-var testingBoard = new Board(4);
+
 
 /*
+
+
 var assertEqual = function(cond1, cond2, testname) {
 	if (cond1 === cond2) {
 		console.log("Passed: " + testname);
