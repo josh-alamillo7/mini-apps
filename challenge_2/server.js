@@ -23,8 +23,36 @@ app.set('port', 8000)
 
 
 
-const convertObjectToCSV = function(object) {
+const changetoCSV = function(object) {
+	//convert an object to the desired CSV output
 
+  var allKeys = Object.keys(object).slice(0, -1);
+  finalString = allKeys.join(',') + '\n'
+  
+  var getAllKeys = function(currentObject) {
+    for (var j = 0; j < allKeys.length; j++) {
+      console.log(allKeys[j])
+      finalString += currentObject[allKeys[j]]
+      if (j < allKeys.length - 1) {
+        finalString += ','
+      }
+      else {
+        finalString += '\n'
+      }
+    }
+    if (currentObject.children.length === 0) {
+      return
+    }
+    else {
+      for (var i = 0; i < currentObject.children.length; i++) {
+        getAllKeys(currentObject.children[i])
+      }
+    }
+  }
+  
+  getAllKeys(object)
+  
+  return finalString
 }
 
 //****************** THE ROUTER **********************
@@ -33,17 +61,18 @@ const convertObjectToCSV = function(object) {
 //probably better practice to have the app use the router and have the router handle the post/get
 //request separately.
 app.use('/', router)
-router.get("/", function(req, res, cb) {
+router.get("/", function(req, res) {
+
 })
 
 
-router.post("/", function(req, res, cb) {
+router.post("/", function(req, res) {
 	req.setEncoding('utf8');
 	data = ''
 	req.on('data', function(chunk) {
 		objectsReceived.push(chunk)}).on('end', function() {
 			console.log(objectsReceived)
-			res.end("Message received and stored!")
+			res.status(201).end("Message received and stored!")
 		})
 })
 
