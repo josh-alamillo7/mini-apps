@@ -6,16 +6,12 @@ var router = express.Router();
 //initialize a global storage.
 var objectsReceived = [];
 
-app.set('port', 3000)
+app.set('port', 8000)
 //***************** REQUEST HANDLER *****************
 
 //logic for the request handler should go here.
 //this should probably call the router
 //^ Yes. depending on what the request type is, call that method on the router.
-const requestHandler = function(req, res) {
-
-
-}
 
 
 //***************  HANDLER FUNCTIONS   ***************
@@ -25,6 +21,8 @@ const requestHandler = function(req, res) {
 //here, the input will be JSON data. (JavaScript Object)
 //on a post, this should add the received object to our storage.
 
+
+
 const convertObjectToCSV = function(object) {
 
 }
@@ -32,17 +30,27 @@ const convertObjectToCSV = function(object) {
 //****************** THE ROUTER **********************
 
 //this should tell us what function to invoke depending on what kind of request we get.
+//probably better practice to have the app use the router and have the router handle the post/get
+//request separately.
+app.use('/', router)
+router.get("/", function(req, res, cb) {
+})
 
+
+router.post("/", function(req, res, cb) {
+	req.setEncoding('utf8');
+	data = ''
+	req.on('data', function(chunk) {
+		objectsReceived.push(chunk)}).on('end', function() {
+			console.log(objectsReceived)
+			res.end("Message received and stored!")
+		})
+})
 
 
 //****************** THE SERVER **********************
 
-/*
-http.createServer(requestHandler).listen(8000, '127.0.0.1', () => {
-	console.log("listening on port 8000");
-});
-*/
-
+//how Express initializes its server
 app.listen(app.get('port'), console.log("listening on port 8000"));
 
 
