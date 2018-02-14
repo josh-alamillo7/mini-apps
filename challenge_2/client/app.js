@@ -5,8 +5,8 @@ $(document).ready(function() {
 	$("form").submit(function(e) {
 		e.preventDefault();
 		var textInBox = $("input").val();
-		console.log("text in box", textInBox)
-		sendAjaxRequest();		
+		console.log("text in box", textInBox);
+		sendAjaxRequest()		
 	})
 })
 
@@ -26,13 +26,28 @@ $.ajax({
 	success: function(data) {
 		var textInBox = $("input").val();
 		$("body").append("<p>" + textInBox + "</p>");
-		console.log('success')
-	},
+		setTimeout(sendAjaxGetRequest, 2000)
+		},
 	error: function (data) {
-		console.log('data', data)
-		console.log('not sent')
+		console.log('data', data);
+		console.log('not sent');
 	}
 })
+}
+
+var sendAjaxGetRequest = function() {
+	$.ajax({
+			url: '/',
+			type: 'GET',
+			contentType: 'application/json',
+			success: function(data) {
+				console.log("u got it")
+				console.log("data", data)},
+			error: function(data) {
+				console.log('no')
+			}
+
+			})
 }
 
 

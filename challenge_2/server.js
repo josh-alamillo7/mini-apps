@@ -24,8 +24,6 @@ const changetoCSV = function(object) {
   var allKeys = Object.keys(object).slice(0, -1);
   finalString = allKeys.join(',') + '\n'
   
-
-
   var getAllValues = function(currentObject) {
 
     for (var j = 0; j < allKeys.length; j++) {
@@ -56,10 +54,11 @@ const changetoCSV = function(object) {
 //probably better practice to have the app use the router and have the router handle the post/get
 //request separately.
 app.use('/', router)
-router.get("/", function(req, res) {
+router.get('/', function(req, res) {
+  console.log("u got here now what")
 	returnString = ""
 	for (var i = 0; i < objectsReceived.length; i++) {
-		returnString += changetoCSV(objectsReceived[i])
+		returnString += changetoCSV(objectsReceived[i].slice(0, -1))
 	}
 	res.status(200).end(returnString)
 })
@@ -71,12 +70,12 @@ router.post('/', function(req, res) {
 	data = ''
 	req.on('data', function(chunk) {
     console.log('chunk', chunk)
-		chunk = chunk.split('\n').join(' ').slice(0, -1);
+		chunk = chunk.split('\n').join(' ');
     console.log('splitchunk', chunk)
     
 
 		objectsReceived.push(JSON.parse(chunk))}).on('end', function() {
-      console.log('hello')
+      console.log(objectsReceived)
 			res.status(201).end("Message received and stored!")
 		})
 })
