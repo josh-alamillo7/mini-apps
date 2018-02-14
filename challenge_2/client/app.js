@@ -4,7 +4,9 @@
 $(document).ready(function() {
 	$("form").submit(function(e) {
 		e.preventDefault();
-		sendAjaxRequest();
+		var textInBox = $("input").val();
+		console.log("text in box", textInBox)
+		sendAjaxRequest();		
 	})
 })
 
@@ -12,27 +14,25 @@ $(document).ready(function() {
 
 //when you press enter or click submit, send an ajax request and display the response
 
-var textInBox = $("#string").val()
-console.log(textInBox)
 
 
 var sendAjaxRequest = function() {
+	var textInBox = $("input").val()
 $.ajax({
 	url: '/',
 	type: 'POST',
 	data: JSON.stringify(textInBox),
 	contentType: 'application/json',
 	success: function(data) {
-		console.log(textInBox)
-		console.log(data);
+		var textInBox = $("input").val();
+		$("body").append("<p>" + textInBox + "</p>");
 		console.log('success')
 	},
 	error: function (data) {
+		console.log('data', data)
 		console.log('not sent')
 	}
-
 })
 }
 
 
-$("body").append("<p>" + textInBox + "</p>");

@@ -41,7 +41,7 @@ const changetoCSV = function(object) {
       return
     } else {
       for (var i = 0; i < currentObject.children.length; i++) {
-        getAllKeys(currentObject.children[i]);
+        getAllValues(currentObject.children[i]);
       }
       }
   }
@@ -66,12 +66,17 @@ router.get("/", function(req, res) {
 
 
 router.post('/', function(req, res) {
+  console.log('posted?')
 	req.setEncoding('utf8');
 	data = ''
 	req.on('data', function(chunk) {
+    console.log('chunk', chunk)
 		chunk = chunk.split('\n').join(' ').slice(0, -1);
+    console.log('splitchunk', chunk)
+    
 
 		objectsReceived.push(JSON.parse(chunk))}).on('end', function() {
+      console.log('hello')
 			res.status(201).end("Message received and stored!")
 		})
 })
