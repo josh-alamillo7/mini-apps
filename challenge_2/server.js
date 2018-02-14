@@ -7,12 +7,6 @@ var router = express.Router();
 var objectsReceived = [];
 
 app.set('port', 8000)
-//***************** REQUEST HANDLER *****************
-
-//logic for the request handler should go here.
-//this should probably call the router
-//^ Yes. depending on what the request type is, call that method on the router.
-
 
 //***************  HANDLER FUNCTIONS   ***************
 
@@ -36,28 +30,24 @@ const changetoCSV = function(object) {
     for (var j = 0; j < allKeys.length; j++) {
       finalString += currentObject[allKeys[j]]
       if (j < allKeys.length - 1) {
-        finalString += ','
+        finalString += ',';
       }
       else {
-        finalString += '\n'
+        finalString += '\n';
       }
     }
     if (currentObject.children.length === 0) {
       return
-    }
-    else {
+    } else {
       for (var i = 0; i < currentObject.children.length; i++) {
-        getAllKeys(currentObject.children[i])
+        getAllKeys(currentObject.children[i]);
       }
-    }
+      }
   }
+  getAllKeys(object);
   
-
-
-  getAllKeys(object)
-  
-  return finalString
-}
+  return finalString;
+};
 
 //****************** THE ROUTER **********************
 
@@ -74,7 +64,7 @@ router.get("/", function(req, res) {
 })
 
 
-router.post("/", function(req, res) {
+router.post('/', function(req, res) {
 	req.setEncoding('utf8');
 	data = ''
 	req.on('data', function(chunk) {
