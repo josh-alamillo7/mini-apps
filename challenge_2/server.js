@@ -29,9 +29,11 @@ const changetoCSV = function(object) {
   var allKeys = Object.keys(object).slice(0, -1);
   finalString = allKeys.join(',') + '\n'
   
+
+
   var getAllKeys = function(currentObject) {
+
     for (var j = 0; j < allKeys.length; j++) {
-      console.log(allKeys[j])
       finalString += currentObject[allKeys[j]]
       if (j < allKeys.length - 1) {
         finalString += ','
@@ -50,6 +52,8 @@ const changetoCSV = function(object) {
     }
   }
   
+
+
   getAllKeys(object)
   
   return finalString
@@ -62,7 +66,11 @@ const changetoCSV = function(object) {
 //request separately.
 app.use('/', router)
 router.get("/", function(req, res) {
-
+	returnString = ""
+	for (var i = 0; i < objectsReceived.length; i++) {
+		returnString += changetoCSV(objectsReceived[i])
+	}
+	res.status(200).end(returnString)
 })
 
 
@@ -70,8 +78,9 @@ router.post("/", function(req, res) {
 	req.setEncoding('utf8');
 	data = ''
 	req.on('data', function(chunk) {
-		objectsReceived.push(chunk)}).on('end', function() {
-			console.log(objectsReceived)
+		chunk = chunk.split('\n').join(' ').slice(0, -1);
+
+		objectsReceived.push(JSON.parse(chunk))}).on('end', function() {
 			res.status(201).end("Message received and stored!")
 		})
 })
