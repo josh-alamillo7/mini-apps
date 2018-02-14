@@ -1,12 +1,13 @@
 const http = require('http');
 const express = require('express');
 var app = express();
+app.use(express.static('client'));
 var router = express.Router();
 
 //initialize a global storage.
 var objectsReceived = [];
 
-app.set('port', 8000)
+app.set('port', 8000);
 
 //***************  HANDLER FUNCTIONS   ***************
 
@@ -25,7 +26,7 @@ const changetoCSV = function(object) {
   
 
 
-  var getAllKeys = function(currentObject) {
+  var getAllValues = function(currentObject) {
 
     for (var j = 0; j < allKeys.length; j++) {
       finalString += currentObject[allKeys[j]]
@@ -44,7 +45,7 @@ const changetoCSV = function(object) {
       }
       }
   }
-  getAllKeys(object);
+  getAllValues(object);
   
   return finalString;
 };

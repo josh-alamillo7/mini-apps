@@ -13,6 +13,7 @@ $(document).ready(function() {
 //when you press enter or click submit, send an ajax request and display the response
 
 var textInBox = $("#string").val()
+console.log(textInBox)
 
 
 var sendAjaxRequest = function() {
@@ -22,6 +23,7 @@ $.ajax({
 	data: JSON.stringify(textInBox),
 	contentType: 'application/json',
 	success: function(data) {
+		console.log(textInBox)
 		console.log(data);
 		console.log('success')
 	},
