@@ -68,6 +68,9 @@ class BowlingAlley extends React.Component {
 			this.scoreTracker[i] = 0
 		}
 		this.strikeSpareTracker = {};
+		for (var i = 1; i <= 10; i++) {
+			this.strikeSpareTracker[i] = 0;
+		}
 		this.handleBowlingPinClick = this.handleBowlingPinClick.bind(this);
 		this.handleBowlButtonClick = this.handleBowlButtonClick.bind(this);
 	}
@@ -75,12 +78,10 @@ class BowlingAlley extends React.Component {
 	handleBowlingPinClick(pinNumber) {
 		if (!this.state.pinsSelected.includes(pinNumber) && this.state.pinsRemaining.includes(pinNumber)) {
 			this.setState({pinsSelected: this.state.pinsSelected.concat([pinNumber])})
-			console.log(this.state)
 		} else if (this.state.pinsRemaining.includes(pinNumber)) {
 			this.setState({pinsSelected: this.state.pinsSelected.filter(pin => {
 				return pin !== pinNumber
 			})})
-			console.log(this.state)
 		}
 		
 	}
@@ -98,30 +99,73 @@ class BowlingAlley extends React.Component {
 	}
 
 	updateScore(numberPinsHit) {
-		
+		console.log("ROUND:", this.round)
+		console.log("TRIAL:", this.trial)
 		//add the number of pins hit to this round's tracker(always)
+		console.log("PINS HIT:", numberPinsHit)
+		console.log("STRIKES AND SPARES:", this.strikeSpareTracker)
 		if (this.trial === 1) {
-			console.log("TRIAL 1")
-			if (this.round > 1) {
-				//check the SS tracker for the last two rounds.
 
+			if (this.round > 1 && this.round < 10) {
+				//check the SS tracker for the last two bowls.
+				this.scoreTracker[this.round] = this.scoreTracker[this.round - 1] + numberPinsHit
+
+				if (this.state.pinsSelected.length === 10) {
+					this.handleStrike()
+					return
+				}
+
+				this.trial = 2
 			}
 
 			//do the following if it's round 1 trial 1.
-			this.scoreTracker[this.round] += numberPinsHit
+			else if (this.round === 1) {
+				this.scoreTracker[this.round] += numberPinsHit
+				
+				if (this.state.pinsSelected.length === 10) {
+					this.handleStrike()
+					return
+				}
+
+				this.trial = 2
+			}
 			//if the user hit a strike, update the strike spare tracker
 			
-			if (this.state.pinsSelected.length === 10) {
-				this.strikeSpareTracker[this.currentRoll] = 2;
-			}
+			
 
-			this.trial = 2
+
 		} else if (this.trial === 2) {
+			if (this.state.pinsRemaining.length === numberPinsHit) {
+				console.log("u got a spare")
+			}
 			this.scoreTracker[this.round] += numberPinsHit
+
+
+
+
+
 			this.setState({pinsRemaining: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]})
 			this.trial = 1
+			this.round++
 		}
+
+
+		
+		console.log(this.state.pinsRemaining)
+		console.log("SCORES:", this.scoreTracker)
 		//check if the last round had a strike
+	}
+
+	handleStrike() {
+		this.strikeSpareTracker[this.round] = 2;
+		this.round++;
+		this.setState({pinsRemaining: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]})
+	}
+
+	handleSpare() {
+		this.strikeSpareTracker[this.round] = 1;
+		this.round++;
+		this.setState({pinsRemaining: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]})
 	}
 
 	render() {
