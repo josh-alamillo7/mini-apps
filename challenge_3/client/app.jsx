@@ -39,16 +39,17 @@ class Board extends React.Component {
 	render() {
 		return (
 			<div>
-			<div>Hello World</div>
 			<div>
-			{(Object.keys(this.squareTracker).map((square) => {
-				if (square[2] === JSON.stringify(6)) {
-					return (<span><span id = {square}>{square}</span>
-					<div></div></span>)
-				} else {
-				return <span id = {square}>{square}</span>
-			}
-				/*return <Square square={square}/>*/
+
+
+			 {(Object.keys(this.squareTracker).map((position) => {
+			// 	if (position[2] === JSON.stringify(6)) {
+			// 		return (<span><span id = {position}>{position}</span>
+			// 		<div></div></span>)
+			// 	} else {
+			// 	return <span id = {position}>{position}</span>
+			// }
+				<Square position={position} />
 			}))
 			}
 			</div>
@@ -72,7 +73,7 @@ if (typeof window !== 'undefined') {
 
 //make a square component.
 var Square = (props) => (
-	<div>i am this</div>
+	<div>this</div>
 );
 
 

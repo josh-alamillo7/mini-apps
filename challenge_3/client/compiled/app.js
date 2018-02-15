@@ -63,31 +63,14 @@ var Board = function (_React$Component) {
 				_react2.default.createElement(
 					'div',
 					null,
-					'Hello World'
-				),
-				_react2.default.createElement(
-					'div',
-					null,
-					Object.keys(this.squareTracker).map(function (square) {
-						if (square[2] === JSON.stringify(6)) {
-							return _react2.default.createElement(
-								'span',
-								null,
-								_react2.default.createElement(
-									'span',
-									{ id: square },
-									square
-								),
-								_react2.default.createElement('div', null)
-							);
-						} else {
-							return _react2.default.createElement(
-								'span',
-								{ id: square },
-								square
-							);
-						}
-						/*return <Square square={square}/>*/
+					Object.keys(this.squareTracker).map(function (position) {
+						// 	if (position[2] === JSON.stringify(6)) {
+						// 		return (<span><span id = {position}>{position}</span>
+						// 		<div></div></span>)
+						// 	} else {
+						// 	return <span id = {position}>{position}</span>
+						// }
+						_react2.default.createElement(Square, { position: position });
 					})
 				)
 			);
@@ -108,7 +91,7 @@ var Square = function Square(props) {
 	return _react2.default.createElement(
 		'div',
 		null,
-		'i am this'
+		'this'
 	);
 };
 
