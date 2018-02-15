@@ -5,14 +5,18 @@ const {render} = require('react-dom')
 
 //**********Individual Pin components**************
 const Pin = (props) => {
-	return <span className={props.number} onClick={function() {props.handleBowlingPinClick(props.number)}}>{props.number} </span>
+	if (props.pinsRemaining.includes(props.number)) {
+		return <span className={props.number} onClick={function() {props.handleBowlingPinClick(props.number)}}>{props.number} </span>
+	} else {
+	return <span className={props.number} onClick={function() {props.handleBowlingPinClick(props.number)}}> </span>
+}
 }
 
 //***********Pinboard child component***************
 const PinBoard = (props) => {
 	{const newPins = []
 	{for (var i = 1; i <= 10; i++){
-		newPins.push(<Pin number={i} handleBowlingPinClick={props.handleBowlingPinClick}/>)
+		newPins.push(<Pin number={i} handleBowlingPinClick={props.handleBowlingPinClick} pinsRemaining={props.pinsRemaining}/>)
 		if (i === 3 || i === 6 || i === 9) {
 			newPins.push(<br/>)
 		}
@@ -25,7 +29,9 @@ const PinBoard = (props) => {
 }
 
 //****************The scoreboard*******************
-
+const ScoreBoard = (props) => {
+	
+}
 
 
 
@@ -82,7 +88,7 @@ class BowlingAlley extends React.Component {
 	render() {
 		return (
 			<div>
-			<PinBoard handleBowlingPinClick={this.handleBowlingPinClick}/><br/>
+			<PinBoard handleBowlingPinClick={this.handleBowlingPinClick} pinsRemaining={this.state.pinsRemaining}/><br/>
 			<BowlButton handleBowlButtonClick={this.handleBowlButtonClick}/>
 			</div>
 		)
