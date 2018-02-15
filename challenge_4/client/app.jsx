@@ -3,16 +3,16 @@ const {render} = require('react-dom')
 
 
 
-//***************Pin components********************
+//**********Individual Pin components**************
 const Pin = (props) => {
-	return <span className={props.number}>{props.number} </span>
+	return <span className={props.number} onClick={function() {props.handleBowlingPinClick(props.number)}}>{props.number} </span>
 }
 
-//********Pinboard child component*****************
+//***********Pinboard child component***************
 const PinBoard = (props) => {
 	{const newPins = []
 	{for (var i = 1; i <= 10; i++){
-		newPins.push(<Pin number={i}/>)
+		newPins.push(<Pin number={i} handleBowlingPinClick={props.handleBowlingPinClick}/>)
 		if (i === 3 || i === 6 || i === 9) {
 			newPins.push(<br/>)
 		}
@@ -31,33 +31,36 @@ class BowlingAlley extends React.Component {
 		this.state = {
 			score: 0,
 			currentPlayer: 1,
+			pinsRemaining: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 			pinsSelected: [],
 			round: 0
 		}
+		this.handleBowlingPinClick = this.handleBowlingPinClick.bind(this);
 	}
 
-	handleBowlingPinClick() {
+	handleBowlingPinClick(pinNumber) {
+		if (!this.state.pinsSelected.includes(pinNumber)) {
+			this.setState({pinsSelected: this.state.pinsSelected.concat([pinNumber])})
+		} else {
+			this.setState({pinsSelected: this.state.pinsSelected.filter(pin => {
+				return pin !== pinNumber
+			})})
+		}
+		
+	}
 
+	handleBowlButtonClick() {
+		//all scoring logic here
 	}
 
 	render() {
 		return (
 			<div>
-			<PinBoard />
+			<PinBoard handleBowlingPinClick={this.handleBowlingPinClick}/>
 			</div>
 		)
 	}
 }
 
+
 render(<BowlingAlley />, document.getElementById('bowling'));
-
-//**************Bowling pin board*****************
-
-
-
-
-
-
-
-
-//************Individual bowling points***********
