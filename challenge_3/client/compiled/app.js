@@ -28,17 +28,68 @@ var Board = function (_React$Component) {
 	function Board(props) {
 		_classCallCheck(this, Board);
 
-		return _possibleConstructorReturn(this, (Board.__proto__ || Object.getPrototypeOf(Board)).call(this, props));
+		//set the size of the board
+		var _this = _possibleConstructorReturn(this, (Board.__proto__ || Object.getPrototypeOf(Board)).call(this, props));
+
+		_this.size = 7;
+		//set a property keeping track of the win condition.
+		//we will let R be player one and B be player two.
+		_this.state = {
+			winCon: null,
+			currentPlayer: "R",
+			squaresFilled: 0
+
+			//initialize a grid representing the game.
+		};_this.squareTracker = {};
+		for (var i = 0; i < _this.size; i++) {
+			for (var j = 0; j < _this.size; j++) {
+				_this.squareTracker[[i, j]] = null;
+			}
+		}
+		console.log(_this.squareTracker);
+
+		return _this;
 	}
 
 	_createClass(Board, [{
+		key: 'handleColumnClick',
+		value: function handleColumnClick() {}
+	}, {
 		key: 'render',
 		value: function render() {
-			//test with Hello World for now
 			return _react2.default.createElement(
 				'div',
 				null,
-				'Hello World'
+				_react2.default.createElement(
+					'div',
+					null,
+					'Hello World'
+				),
+				_react2.default.createElement(
+					'div',
+					null,
+					Object.keys(this.squareTracker).map(function (square) {
+						if (square[2] === JSON.stringify(6)) {
+							return _react2.default.createElement(
+								'span',
+								null,
+								_react2.default.createElement(
+									'span',
+									{ id: square },
+									square
+								),
+								_react2.default.createElement('div', null)
+							);
+						} else {
+							return _react2.default.createElement(
+								'span',
+								{ id: square },
+								square
+							);
+						}
+						/*return <Square square={square}/>*/
+					})
+				)
 			);
 		}
 	}]);
@@ -46,13 +97,19 @@ var Board = function (_React$Component) {
 	return Board;
 }(_react2.default.Component);
 
-console.log("hey");
-
 if (typeof window !== 'undefined') {
 	(0, _reactDom.render)(_react2.default.createElement(Board, null), document.getElementById('app'));
 }
 
 //******************Views**************************
 
+//make a square component.
+var Square = function Square(props) {
+	return _react2.default.createElement(
+		'div',
+		null,
+		'i am this'
+	);
+};
 
 //****************Tests****************************
