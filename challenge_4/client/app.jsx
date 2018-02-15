@@ -24,6 +24,20 @@ const PinBoard = (props) => {
 }
 }
 
+//****************The scoreboard*******************
+
+
+
+
+//****************Bowl Button**********************
+const BowlButton = (props) => {
+	return <button className="bowlbutton" onClick={function() {props.handleBowlButtonClick()}}>Knock them down!</button>
+}
+
+
+
+
+
 //****************Main component*******************
 class BowlingAlley extends React.Component {
 	constructor(props) {
@@ -33,30 +47,43 @@ class BowlingAlley extends React.Component {
 			currentPlayer: 1,
 			pinsRemaining: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 			pinsSelected: [],
-			round: 0
+			round: 1
 		}
 		this.handleBowlingPinClick = this.handleBowlingPinClick.bind(this);
+		this.handleBowlButtonClick = this.handleBowlButtonClick.bind(this);
 	}
 
 	handleBowlingPinClick(pinNumber) {
-		if (!this.state.pinsSelected.includes(pinNumber)) {
+		if (!this.state.pinsSelected.includes(pinNumber) && this.state.pinsRemaining.includes(pinNumber)) {
 			this.setState({pinsSelected: this.state.pinsSelected.concat([pinNumber])})
-		} else {
+			console.log(this.state)
+		} else if (this.state.pinsRemaining.includes(pinNumber)) {
 			this.setState({pinsSelected: this.state.pinsSelected.filter(pin => {
 				return pin !== pinNumber
 			})})
+			console.log(this.state)
 		}
 		
 	}
 
 	handleBowlButtonClick() {
-		//all scoring logic here
+		//all scoring logic here(and probably in some helper functions)
+		this.setState({pinsSelected: []})
+		this.setState({pinsRemaining: this.state.pinsRemaining.filter(pin => {
+			return (!this.state.pinsSelected.includes(pin))
+		})})
+		console.log(this.state)
+	}
+
+	updateScore() {
+
 	}
 
 	render() {
 		return (
 			<div>
-			<PinBoard handleBowlingPinClick={this.handleBowlingPinClick}/>
+			<PinBoard handleBowlingPinClick={this.handleBowlingPinClick}/><br/>
+			<BowlButton handleBowlButtonClick={this.handleBowlButtonClick}/>
 			</div>
 		)
 	}
