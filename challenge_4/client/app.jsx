@@ -31,9 +31,7 @@ const PinBoard = (props) => {
 //*******I show you what pins you've clicked*******
 const TrackerBoard = (props) => {
 	return (
-	<div>
-	<div>PINS SELECTED:{props.pinsSelected.join(", ")}</div>
-	</div>
+	<span className = "tracker">PINS SELECTED:{props.pinsSelected.join(", ")}</span>
 	)
 }
 
@@ -98,6 +96,10 @@ class BowlingAlley extends React.Component {
 		for (var i = 1; i <= 10; i++) {
 			this.strikeSpareTracker[i] = 0;
 		}
+		this.hitDisplay = {};
+		for (var i = 1; i <= 10; i++) {
+			this.hitDisplay[i] = ['-', '-'];
+		}
 		this.handleBowlingPinClick = this.handleBowlingPinClick.bind(this);
 		this.handleBowlButtonClick = this.handleBowlButtonClick.bind(this);
 	}
@@ -134,46 +136,42 @@ class BowlingAlley extends React.Component {
 		if (this.trial === 1) {
 
 			if (this.round < 10) {
-				//check the SS tracker for the last two bowls.
 				if (this.strikeSpareTracker[this.round - 1] > 0) {
-					this.handleStrikesOrSparesOnLastRound(numberPinsHit)
-
+					this.handleStrikesOrSparesOnPrevRound(numberPinsHit)
 				} else {
-				//no matter what, the current round gets updated by the pins hit
 				if (this.round === 1) {
 					this.scoreTracker[this.round] = numberPinsHit
-				} else {
-					this.scoreTracker[this.round] = this.scoreTracker[this.round - 1] + numberPinsHit
-				}
+					} else {
+						this.scoreTracker[this.round] = this.scoreTracker[this.round - 1] + numberPinsHit
+					}
 				}
 				if (this.state.pinsSelected.length === 10) {
 					this.handleStrike()
 					return
 				}				
 			}
-			//do the following if it's round 1 trial 1.
-			else if (this.round === 1) {
-				this.scoreTracker[this.round] += numberPinsHit;
-				
-				if (this.state.pinsSelected.length === 10) {
-					this.handleStrike()
-					return
-				}				
+
+			if (this.round === 10) {
+				//to be completed
 			}
-			//if the user hit a strike, update the strike spare tracker
+			this.hitDisplay[this.round][0] = numberPinsHit
 			this.trial = 2
 			
 		} else if (this.trial === 2) {
 
 			if (this.round < 10) {
 				if (this.state.pinsRemaining.length === numberPinsHit) {
+					if (this.strikeSpareTracker[this.round - 1] > 0) {
+							this.handleStrikesOrSparesOnPrevRound(numberPinsHit)
+							this.scoreTracker[this.round] += numberPinsHit;
+					}
 					this.handleSpare(numberPinsHit)
 					return
 				}
 				else {
 					if (this.round < 10) {						
 						if (this.strikeSpareTracker[this.round - 1] > 0) {
-							this.handleStrikesOrSparesOnLastRound(numberPinsHit)
+							this.handleStrikesOrSparesOnPrevRound(numberPinsHit)
 							this.scoreTracker[this.round] += numberPinsHit;
 						}
 						else {
@@ -182,8 +180,10 @@ class BowlingAlley extends React.Component {
 					}
 					this.setState({pinsRemaining: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]})
 					this.trial = 1;
+					this.hitDisplay[this.round][1] = numberPinsHit
 					this.round++;
 				}
+
 			}
 		}
 
@@ -198,6 +198,7 @@ class BowlingAlley extends React.Component {
 	handleStrike() {
 		console.log('hey strike')
 		this.strikeSpareTracker[this.round] = 2;
+		this.hitDisplay[this.round][0] = "X"
 		this.round++;
 		this.setState({pinsRemaining: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]})
 		console.log("STRIKES AND SPARES:", this.strikeSpareTracker)
@@ -207,6 +208,7 @@ class BowlingAlley extends React.Component {
 	handleSpare(numberPinsHit) {
 		console.log('hey spare')
 		this.strikeSpareTracker[this.round] = 1;
+		this.hitDisplay[this.round][1] = "/"
 		this.scoreTracker[this.round] += numberPinsHit;
 		this.round++;
 		this.trial = 1;
@@ -215,7 +217,7 @@ class BowlingAlley extends React.Component {
 		console.log("SCORES:", this.scoreTracker)
 	}
 
-	handleStrikesOrSparesOnLastRound (numberPinsHit) {
+	handleStrikesOrSparesOnPrevRound (numberPinsHit) {
 		if (this.trial === 1) {
 			this.scoreTracker[this.round - 1] += numberPinsHit
 			this.strikeSpareTracker[this.round - 1]--
@@ -234,10 +236,9 @@ class BowlingAlley extends React.Component {
 			<PinBoard handleBowlingPinClick={this.handleBowlingPinClick} pinsRemaining={this.state.pinsRemaining}/><br/>
 			<BowlButton handleBowlButtonClick={this.handleBowlButtonClick}/>
 			<TrackerBoard pinsSelected={this.state.pinsSelected}/> 
-			<div className = "boardtitle">This will be the scoreboard</div>
 			<table>
 				<tbody>
-				<tr>
+				<tr className = "header">
 					<td>ROUND 1</td>
 					<td>ROUND 2</td>
 					<td>ROUND 3</td>
@@ -260,6 +261,18 @@ class BowlingAlley extends React.Component {
 					<td>{this.scoreTracker[8]}</td>
 					<td>{this.scoreTracker[9]}</td>
 					<td>{this.scoreTracker[10]}</td>
+				</tr>
+				<tr>
+					<td>{this.hitDisplay[1][0]} {this.hitDisplay[1][1]}</td>
+					<td>{this.hitDisplay[2][0]} {this.hitDisplay[2][1]}</td>
+					<td>{this.hitDisplay[3][0]} {this.hitDisplay[3][1]}</td>
+					<td>{this.hitDisplay[4][0]} {this.hitDisplay[4][1]}</td>
+					<td>{this.hitDisplay[5][0]} {this.hitDisplay[5][1]}</td>
+					<td>{this.hitDisplay[6][0]} {this.hitDisplay[6][1]}</td>
+					<td>{this.hitDisplay[7][0]} {this.hitDisplay[7][1]}</td>
+					<td>{this.hitDisplay[8][0]} {this.hitDisplay[8][1]}</td>
+					<td>{this.hitDisplay[9][0]} {this.hitDisplay[9][1]}</td>
+					<td>{this.hitDisplay[10][0]} {this.hitDisplay[10][1]}</td>
 				</tr>
 				</tbody>
 			</table>
