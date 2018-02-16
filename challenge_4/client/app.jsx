@@ -85,17 +85,18 @@ class BowlingAlley extends React.Component {
 		}
 		this.round = 1
 		this.trial = 1
-		this.currentRoll = 1
-		//"rollOneHit" is necessary for keeping track of roll one's score during round two
-		this.rollOneHit = 0;
+		//scoreboard uses this
 		this.scoreTracker = {};
 		for (var i = 1; i <= 10; i++) {
 			this.scoreTracker[i] = 0
 		}
+		//keeps track of which rounds have had strikes/spares(2 = strike, 1 = spare).
+		//decrements when the effect on score is handled.
 		this.strikeSpareTracker = {};
 		for (var i = 1; i <= 10; i++) {
 			this.strikeSpareTracker[i] = 0;
 		}
+		//strike and spare symbol manager
 		this.hitDisplay = {};
 		for (var i = 1; i <= 10; i++) {
 			this.hitDisplay[i] = ['-', '-'];
@@ -134,8 +135,9 @@ class BowlingAlley extends React.Component {
 		console.log("PINS HIT:", numberPinsHit)
 		console.log("STRIKES AND SPARES:", this.strikeSpareTracker)
 		if (this.trial === 1) {
-
+			//IF FIRST ROLL IN THE ROUND
 			if (this.round < 10) {
+				//handle either strike or strike/spare on last round.
 				if (this.strikeSpareTracker[this.round - 1] > 0) {
 					this.handleStrikesOrSparesOnPrevRound(numberPinsHit)
 				} else {
@@ -154,12 +156,15 @@ class BowlingAlley extends React.Component {
 			if (this.round === 10) {
 				//to be completed
 			}
+
 			this.hitDisplay[this.round][0] = numberPinsHit
 			this.trial = 2
 			
 		} else if (this.trial === 2) {
-
+			//IF SECOND ROLL IN THE ROUND
 			if (this.round < 10) {
+				//handle a strike on last round
+				//handle a spare
 				if (this.state.pinsRemaining.length === numberPinsHit) {
 					if (this.strikeSpareTracker[this.round - 1] > 0) {
 							this.handleStrikesOrSparesOnPrevRound(numberPinsHit)
@@ -168,6 +173,8 @@ class BowlingAlley extends React.Component {
 					this.handleSpare(numberPinsHit)
 					return
 				}
+
+				//otherwise, proceed as usual
 				else {
 					if (this.round < 10) {						
 						if (this.strikeSpareTracker[this.round - 1] > 0) {
