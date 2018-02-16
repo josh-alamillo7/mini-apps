@@ -28,13 +28,41 @@ const PinBoard = (props) => {
 }
 }
 
-//****************The scoreboard*******************
+//*******I show you what pins you've clicked*******
 const TrackerBoard = (props) => {
 	return (
 	<div>
-	<div>SCORE:{props.score}</div>
 	<div>PINS SELECTED:{props.pinsSelected.join(", ")}</div>
 	</div>
+	)
+}
+
+
+//**************The Scoreboard*********************
+const ScoreBoard = (props) => {
+	return (
+		<div>
+		<div className = "boardtitle">This will be the scoreboard</div>
+		<table>
+			<tbody>
+			<tr>
+				<td>ROUND 1</td>
+				<td>ROUND 2</td>
+				<td>ROUND 3</td>
+				<td>ROUND 4</td>
+				<td>ROUND 5</td>
+				<td>ROUND 6</td>
+				<td>ROUND 7</td>
+				<td>ROUND 8</td>
+				<td>ROUND 9</td>
+				<td>ROUND 10</td>
+			</tr>
+			<tr>
+				<td>{console.log(props)}</td>
+			</tr>
+			</tbody>
+		</table>
+		</div>
 	)
 }
 
@@ -51,7 +79,6 @@ class BowlingAlley extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			score: 0,
 			currentPlayer: 1,
 			pinsRemaining: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 			pinsSelected: [],
@@ -116,9 +143,8 @@ class BowlingAlley extends React.Component {
 				if (this.round === 1) {
 					this.scoreTracker[this.round] = numberPinsHit
 				} else {
-				this.scoreTracker[this.round] = this.scoreTracker[this.round - 1] + numberPinsHit
+					this.scoreTracker[this.round] = this.scoreTracker[this.round - 1] + numberPinsHit
 				}
-
 				}
 				if (this.state.pinsSelected.length === 10) {
 					this.handleStrike()
@@ -160,6 +186,9 @@ class BowlingAlley extends React.Component {
 				}
 			}
 		}
+
+		this.setState({scoreTracker: this.state.scoreTracker})
+		console.log("SCORETRACKER IN STATE", this.state.scoreTracker)
 
 		console.log("STRIKES AND SPARES:", this.strikeSpareTracker)
 		console.log("SCORES:", this.scoreTracker)
@@ -204,7 +233,36 @@ class BowlingAlley extends React.Component {
 			<div>
 			<PinBoard handleBowlingPinClick={this.handleBowlingPinClick} pinsRemaining={this.state.pinsRemaining}/><br/>
 			<BowlButton handleBowlButtonClick={this.handleBowlButtonClick}/>
-			<TrackerBoard pinsSelected={this.state.pinsSelected} score={this.state.score}/> 
+			<TrackerBoard pinsSelected={this.state.pinsSelected}/> 
+			<div className = "boardtitle">This will be the scoreboard</div>
+			<table>
+				<tbody>
+				<tr>
+					<td>ROUND 1</td>
+					<td>ROUND 2</td>
+					<td>ROUND 3</td>
+					<td>ROUND 4</td>
+					<td>ROUND 5</td>
+					<td>ROUND 6</td>
+					<td>ROUND 7</td>
+					<td>ROUND 8</td>
+					<td>ROUND 9</td>
+					<td>ROUND 10</td>
+				</tr>
+				<tr>
+					<td>{this.scoreTracker[1]}</td>
+					<td>{this.scoreTracker[2]}</td>
+					<td>{this.scoreTracker[3]}</td>
+					<td>{this.scoreTracker[4]}</td>
+					<td>{this.scoreTracker[5]}</td>
+					<td>{this.scoreTracker[6]}</td>
+					<td>{this.scoreTracker[7]}</td>
+					<td>{this.scoreTracker[8]}</td>
+					<td>{this.scoreTracker[9]}</td>
+					<td>{this.scoreTracker[10]}</td>
+				</tr>
+				</tbody>
+			</table>
 			</div>
 		)
 	}
