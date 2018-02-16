@@ -106,66 +106,97 @@ class BowlingAlley extends React.Component {
 		console.log("STRIKES AND SPARES:", this.strikeSpareTracker)
 		if (this.trial === 1) {
 
-			if (this.round > 1 && this.round < 10) {
+			if (this.round < 10) {
 				//check the SS tracker for the last two bowls.
-				this.scoreTracker[this.round] = this.scoreTracker[this.round - 1] + numberPinsHit
+				if (this.strikeSpareTracker[this.round - 1] > 0) {
+					this.handleStrikesOrSparesOnLastRound(numberPinsHit)
 
+				} else {
+				//no matter what, the current round gets updated by the pins hit
+				if (this.round === 1) {
+					this.scoreTracker[this.round] = numberPinsHit
+				} else {
+				this.scoreTracker[this.round] = this.scoreTracker[this.round - 1] + numberPinsHit
+				}
+
+				}
 				if (this.state.pinsSelected.length === 10) {
 					this.handleStrike()
 					return
-				}
-
-				this.trial = 2
+				}				
 			}
-
 			//do the following if it's round 1 trial 1.
 			else if (this.round === 1) {
-				this.scoreTracker[this.round] += numberPinsHit
+				this.scoreTracker[this.round] += numberPinsHit;
 				
 				if (this.state.pinsSelected.length === 10) {
 					this.handleStrike()
 					return
-				}
-
-				this.trial = 2
+				}				
 			}
 			//if the user hit a strike, update the strike spare tracker
+			this.trial = 2
 			
-			
-
-
 		} else if (this.trial === 2) {
-			if (this.state.pinsRemaining.length === numberPinsHit) {
-				console.log("u got a spare")
+
+			if (this.round < 10) {
+				if (this.state.pinsRemaining.length === numberPinsHit) {
+					this.handleSpare(numberPinsHit)
+					return
+				}
+				else {
+					if (this.round < 10) {						
+						if (this.strikeSpareTracker[this.round - 1] > 0) {
+							this.handleStrikesOrSparesOnLastRound(numberPinsHit)
+							this.scoreTracker[this.round] += numberPinsHit;
+						}
+						else {
+							this.scoreTracker[this.round] += numberPinsHit
+						}
+					}
+					this.setState({pinsRemaining: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]})
+					this.trial = 1;
+					this.round++;
+				}
 			}
-			this.scoreTracker[this.round] += numberPinsHit
-
-
-
-
-
-			this.setState({pinsRemaining: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]})
-			this.trial = 1
-			this.round++
 		}
 
-
-		
-		console.log(this.state.pinsRemaining)
+		console.log("STRIKES AND SPARES:", this.strikeSpareTracker)
 		console.log("SCORES:", this.scoreTracker)
 		//check if the last round had a strike
 	}
 
 	handleStrike() {
+		console.log('hey strike')
 		this.strikeSpareTracker[this.round] = 2;
 		this.round++;
 		this.setState({pinsRemaining: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]})
+		console.log("STRIKES AND SPARES:", this.strikeSpareTracker)
+		console.log("SCORES:", this.scoreTracker)
 	}
 
-	handleSpare() {
+	handleSpare(numberPinsHit) {
+		console.log('hey spare')
 		this.strikeSpareTracker[this.round] = 1;
+		this.scoreTracker[this.round] += numberPinsHit;
 		this.round++;
+		this.trial = 1;
 		this.setState({pinsRemaining: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]})
+		console.log("STRIKES AND SPARES:", this.strikeSpareTracker)
+		console.log("SCORES:", this.scoreTracker)
+	}
+
+	handleStrikesOrSparesOnLastRound (numberPinsHit) {
+		if (this.trial === 1) {
+			this.scoreTracker[this.round - 1] += numberPinsHit
+			this.strikeSpareTracker[this.round - 1]--
+			this.scoreTracker[this.round] = this.scoreTracker[this.round - 1] + numberPinsHit
+		}
+		else {
+			this.scoreTracker[this.round - 1] += numberPinsHit
+			this.strikeSpareTracker[this.round - 1]--
+			this.scoreTracker[this.round] += numberPinsHit
+		}
 	}
 
 	render() {
